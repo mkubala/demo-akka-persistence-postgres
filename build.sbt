@@ -31,7 +31,7 @@ fork in run := true
 
 libraryDependencies ++= {
   val akkaVersion = "2.6.10"
-  val akkaPersistencePostgresVersion = "0.3.5+11-4ee2163e-SNAPSHOT"
+  val akkaPersistencePostgresVersion = "0.3.5+14-dd9b3b28-SNAPSHOT"
   Seq(
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,

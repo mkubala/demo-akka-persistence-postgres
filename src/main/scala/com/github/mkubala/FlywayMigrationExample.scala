@@ -20,8 +20,8 @@ package com.github.mkubala
 import akka.actor.{ ActorSystem, Props }
 import akka.event.LoggingReceive
 import akka.persistence.{ PersistentActor, SnapshotOffer }
-import akka.persistence.postgres.migration.journal.JournalMigration
-import akka.persistence.postgres.migration.snapshot.SnapshotStoreMigration
+import akka.persistence.postgres.migration.journal.Jdbc4JournalMigration
+import akka.persistence.postgres.migration.snapshot.Jdbc4SnapshotStoreMigration
 import akka.testkit.TestProbe
 import com.typesafe.config.{ Config, ConfigFactory }
 import org.flywaydb.core.Flyway
@@ -32,7 +32,7 @@ import scala.concurrent.{ Await, ExecutionContext, Future }
 
 import pprint._
 
-object MigrationTest {
+object FlywayMigrationExample {
 
   lazy val configuration = ConfigFactory.load("migration-application.conf")
   implicit val system: ActorSystem = ActorSystem("MigratedWrapperApp", configuration)
@@ -74,13 +74,15 @@ object MigrationTest {
 
 class V2_0__MigrateJournal(config: Config)(implicit system: ActorSystem) extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
-    new JournalMigration(config).run()
+    val migration = new Jdbc4JournalMigration(config)
+    Await.ready(migration.run(), Duration.Inf)
   }
 }
 
 class V2_1__MigrateSnapshots(config: Config)(implicit system: ActorSystem) extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
-    new SnapshotStoreMigration(config).run()
+    val migration = new Jdbc4SnapshotStoreMigration(config)
+    Await.ready(migration.run(), Duration.Inf)
   }
 }
 

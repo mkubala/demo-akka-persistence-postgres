@@ -15,3 +15,15 @@ It shows the following:
   - In short, how easy it is to create an event sourced application.
   
 Have fun!
+
+# Running examples
+To run the examples you have launch the local PostgreSQL instance:
+```
+./launch-postgres.sh
+```
+
+And then run the project:
+```
+sbt run
+```    
+You will be prompted for which demo to run.
